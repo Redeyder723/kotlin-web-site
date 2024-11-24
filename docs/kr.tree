@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+run<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE instance-profile SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 <instance-profile id="kr" name="Kotlin" start-page="home.topic" status="release">
 	<toc-element toc-title="Home" topic="home.topic"/>
