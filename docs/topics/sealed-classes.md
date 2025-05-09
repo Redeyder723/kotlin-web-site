@@ -153,7 +153,7 @@ open class CustomError(): Error
 
 ### Inheritance in multiplatform projects
 
-There is one more inheritance restriction in [multiplatform projects](multiplatform-get-started.md): direct subclasses of sealed classes must
+There is one more inheritance restriction in [multiplatform projects](multiplatform-intro.md): direct subclasses of sealed classes must
 reside in the same [source set](multiplatform-discover-project.md#source-sets). It applies to sealed classes without the [expected and actual modifiers](multiplatform-expect-actual.md).
 
 If a sealed class is declared as `expect` in a common source set and have `actual` implementations in platform source sets,
@@ -164,7 +164,7 @@ you can create subclasses in any source set between the `expect` and `actual` de
 
 ## Use sealed classes with when expression
 
-The key benefit of using sealed classes comes into play when you use them in a [`when`](control-flow.md#when-expression)
+The key benefit of using sealed classes comes into play when you use them in a [`when`](control-flow.md#when-expressions-and-statements)
 expression.
 The `when` expression, used with a sealed class, allows the Kotlin compiler to check exhaustively that all possible cases are covered. 
 In such cases, you don't need to add an `else` clause:

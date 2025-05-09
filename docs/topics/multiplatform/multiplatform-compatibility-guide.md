@@ -15,11 +15,12 @@ with available Gradle, Xcode, and Android Gradle plugin versions:
 
 | Kotlin Multiplatform plugin version | Gradle    | Android Gradle plugin | Xcode |
 |-------------------------------------|-----------|-----------------------|-------|
+| 2.0.21                              | 7.5-8.8*  | 7.4.2–8.5             | 16.0  |
 | 2.0.20                              | 7.5-8.8*  | 7.4.2–8.5             | 15.3  |
 | 2.0.0                               | 7.5-8.5   | 7.4.2–8.3             | 15.3  |
 | 1.9.20                              | 7.5-8.1.1 | 7.4.2–8.2             | 15.0  |
 
-> Kotlin 2.0.20 is fully compatible with Gradle 6.8.3 through 8.6.
+> Kotlin 2.0.20 and 2.0.21 are fully compatible with Gradle 6.8.3 through 8.6.
 > Gradle 8.7 and 8.8 are also supported, but you may see deprecation warnings in your multiplatform projects
 > calling the [`withJava()` function in the JVM target](multiplatform-dsl-reference.md#jvm-targets). 
 > For more information, see the issue in [YouTrack](https://youtrack.jetbrains.com/issue/KT-66542/Gradle-JVM-target-with-withJava-produces-a-deprecation-warning).
@@ -760,7 +761,8 @@ the Kotlin Gradle plugin, making it easier to use and maintain the resulting bui
 Here's the planned deprecation cycle:
 
 * 1.9.20: introduce a deprecation warning when multiple similar targets are used in Kotlin Multiplatform projects
-* 2.0: report an error in such cases, causing the build to fail
+* 2.1.0: report an error in such cases, except for Kotlin/JS targets; to learn more about this exception, see the issue in [YouTrack](https://youtrack.jetbrains.com/issue/KT-47038/KJS-MPP-Split-JS-target-into-JsBrowser-and-JsNode)
+
 
 <anchor name="jvmWithJava-preset-deprecation"/>
 ## Deprecated jvmWithJava preset
@@ -868,7 +870,7 @@ removed from the public API of the Kotlin Gradle plugin in future releases. This
 
 **What's the best practice now?**
 
-Use respective [Kotlin targets](https://kotlinlang.org/docs/multiplatform-dsl-reference.html#targets) instead, for example:
+Use respective [Kotlin targets](multiplatform-dsl-reference.md#targets) instead, for example:
 
 <table>
     <tr>
@@ -913,8 +915,7 @@ Here's the planned deprecation cycle:
 
 **What's changed?**
 
-The JetBrains team has revamped the approach to forward declarations in Kotlin to make their behavior more predictable
-and prepare this functionality for the upcoming Kotlin 2.0 release. From now on:
+The JetBrains team has revamped the approach to forward declarations in Kotlin to make their behavior more predictable:
 
 * You can only import forward declarations using the `cnames` or ` objcnames` packages.
 * You need to explicitly make a cast to and from the corresponding C and Objective-C forward declaration.
@@ -926,48 +927,49 @@ and prepare this functionality for the upcoming Kotlin 2.0 release. From now on:
   Now, you can only use a special forward declaration package for that: `import cnames.structs.cstructName`.
   The same is true for `objcnames`.
 
-*  Consider two objcinterop libraries, one that uses `objcnames.protocols.ForwardDeclaredProtocolProtocol` and the other that has an actual definition:
+* Consider two objcinterop libraries: one that uses `objcnames.protocols.ForwardDeclaredProtocolProtocol` and another
+  that has an actual definition:
 
-    ```ObjC
-    // First objcinterop library
-    #import <Foundation/Foundation.h>
-    
-    @protocol ForwardDeclaredProtocol;
-    
-    NSString* consumeProtocol(id<ForwardDeclaredProtocol> s) {
-        return [NSString stringWithUTF8String:"Protocol"];
-    }
-    ```
-    
-    ```ObjC
-    // Second objcinterop library
-    // Header:
-    #import <Foundation/Foundation.h>
-    @protocol ForwardDeclaredProtocol
-    @end
-    // Implementation:
-    @implementation ForwardDeclaredProtocolImpl : NSObject
-    @end;
-    
-    id<ForwardDeclaredProtocol> produceProtocol() {
-        return [ForwardDeclaredProtocolImpl new];
-    }
-    ```
-    
-    Previously, it was possible to transfer objects between them seamlessly. Now, an explicit `as`  cast is required
-    for the forward declaration:
-    
-    ```kotlin
-    // Kotlin code:
-    fun test() {
-        consumeProtocol(produceProtocol() as objcnames.protocols.ForwardDeclaredProtocolProtocol)
-    }
-    ```
-    
-    > The casting to `objcnames.protocols.ForwardDeclaredProtocolProtocol` is only allowed from the corresponding real class.
-    > Otherwise, you'll get an error.
-    >
-    {style="note"}
+  ```ObjC
+  // First objcinterop library
+  #import <Foundation/Foundation.h>
+  
+  @protocol ForwardDeclaredProtocol;
+  
+  NSString* consumeProtocol(id<ForwardDeclaredProtocol> s) {
+      return [NSString stringWithUTF8String:"Protocol"];
+  }
+  ```
+
+  ```ObjC
+  // Second objcinterop library
+  // Header:
+  #import <Foundation/Foundation.h>
+  @protocol ForwardDeclaredProtocol
+  @end
+  // Implementation:
+  @interface ForwardDeclaredProtocolImpl : NSObject <ForwardDeclaredProtocol>
+  @end
+
+  id<ForwardDeclaredProtocol> produceProtocol() {
+      return [ForwardDeclaredProtocolImpl new];
+  }
+  ```
+
+  Previously, it was possible to transfer objects between them seamlessly. Now, an explicit `as` cast is required
+  for the forward declaration:
+
+  ```kotlin
+  // Kotlin code:
+  fun test() {
+      consumeProtocol(produceProtocol() as objcnames.protocols.ForwardDeclaredProtocolProtocol)
+  }
+  ```
+
+  > You can only cast to `objcnames.protocols.ForwardDeclaredProtocolProtocol` from the corresponding real class.
+  > Otherwise, you'll get an error.
+  >
+  {style="note"}
 
 **When do the changes take effect?**
 

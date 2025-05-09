@@ -1,8 +1,8 @@
 [//]: # (title: Multiplatform Gradle DSL reference)
 
-The Kotlin Multiplatform Gradle plugin is a tool for creating [Kotlin Multiplatform](multiplatform.md) projects.
+The Kotlin Multiplatform Gradle plugin is a tool for creating Kotlin Multiplatform projects.
 Here we provide a reference of its contents; use it as a reminder when writing Gradle build scripts
-for Kotlin Multiplatform projects. Learn the [concepts of Kotlin Multiplatform projects, how to create and configure them](multiplatform-get-started.md).
+for Kotlin Multiplatform projects. Learn the [concepts of Kotlin Multiplatform projects, how to create and configure them](multiplatform-intro.md).
 
 ## Id and version
 
@@ -370,12 +370,12 @@ To provide an interop with a library, add an entry to `cinterops` and define its
 
 | **Name**         | **Description**                                       | 
 |------------------|-------------------------------------------------------|
-| `definitionFile` | The `.def` file describing the native API.                |
+| `definitionFile` | The `.def` file describing the native API.            |
 | `packageName`    | Package prefix for the generated Kotlin API.          |
 | `compilerOpts`   | Options to pass to the compiler by the cinterop tool. |
 | `includeDirs`    | Directories to look for headers.                      |
-
-Learn more how to [configure interop with native languages](multiplatform-configure-compilations.md#configure-interop-with-native-languages).
+| `header`         | Header to be included in the bindings.                |
+| `headers`        | The list of headers to be included in the bindings.   |
 
 <tabs group="build-script">
 <tab title="Kotlin" group-key="kotlin">
@@ -400,6 +400,10 @@ kotlin {
 
                 // A shortcut for includeDirs.allHeaders.
                 includeDirs("include/directory", "another/directory")
+
+                // Header files to be included in the bindings.
+                header("path/to/header.h")
+                headers("path/to/header1.h", "path/to/header2.h")
             }
 
             val anotherInterop by cinterops.creating { /* ... */ }
@@ -432,6 +436,10 @@ kotlin {
 
                     // A shortcut for includeDirs.allHeaders.
                     includeDirs("include/directory", "another/directory")
+
+                    // Header files to be included in the bindings.
+                    header("path/to/header.h")
+                    headers("path/to/header1.h", "path/to/header2.h")
                 }
 
                 anotherInterop { /* ... */ }
@@ -443,6 +451,8 @@ kotlin {
 
 </tab>
 </tabs>
+
+For more cinterop properties, see [Definition file](native-definition-file.md#properties).
 
 ### Android targets
 

@@ -18,6 +18,12 @@ Since Kotlin 2.0.0, we ship the following types of releases:
 For each language and tooling release, we also ship several preview (_EAP_) versions for you to try
 new features before they are released. See [Early Access Preview](eap.md) for details.
 
+> If you want to be notified about new Kotlin releases, subscribe to the [Kotlin newsletter](https://lp.jetbrains.com/subscribe-to-kotlin-news/), 
+> follow [Kotlin on X](https://x.com/kotlin), 
+> or enable the **Watch | Custom | Releases** option on the [Kotlin GitHub repository](https://github.com/JetBrains/kotlin).
+> 
+{style="note"}
+
 ## Update to a new Kotlin version
 
 To upgrade your project to a new release, you need to update your build script file.
@@ -92,6 +98,16 @@ The following table lists details of the latest Kotlin releases:
     <tr>
         <th>Build info</th>
         <th>Build highlights</th>
+    </tr>
+    <tr>
+        <td><strong>2.0.21</strong>
+            <p>Released: <strong>October 10, 2024</strong></p>
+            <p><a href="https://github.com/JetBrains/kotlin/releases/tag/v2.0.21" target="_blank">Release on GitHub</a></p>
+        </td>
+        <td>
+            <p>A bug fix release for Kotlin 2.0.20</p>
+            <p>For more details, please refer to the <a href="https://github.com/JetBrains/kotlin/releases/tag/v2.0.21">changelog</a>.</p>
+        </td>
     </tr>
     <tr>
         <td><strong>2.0.20</strong>
