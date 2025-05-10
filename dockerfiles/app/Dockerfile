@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+99783bf80608ede5a9f8a70e2e1b39214c309bc7FROM python:3.8-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
